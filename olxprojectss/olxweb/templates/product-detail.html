@@ -1,0 +1,98 @@
+{%extends 'base.html'%}
+{%block body%}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-4">
+                {%if product.image%}
+                <img class="card-img-top mb-5 mb-md-0" src="{{product.image.url}}" alt="..." />
+                {%else%}
+                <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg"
+                    alt="..." />
+                {%endif%}
+            </div>
+            <div class="col-md-4">
+                <div class="small mb-1"></div>
+                <h1 class="display-5 fw-bolder">{{product.product_name}}</h1>
+                <div class="fs-5 mb-5">
+                    <span class="text-decoration-line-through"></span>
+                    <span>RS{{product.price}}</span>
+                </div>
+                <p class="lead">{{product.description}}</p>
+                <div class="d-flex">
+                    <form action="{%url 'cart-add' product.id%}" method="post">
+                        {%csrf_token%}
+                        <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1"
+                            style="max-width: 3rem" name="qty" />
+                        <button class="btn btn-outline-dark flex-shrink-0 mt-4" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Add to Saved Products
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4 p-5 border shadow">
+                <div>
+                    <h3>Ask about product</h3>
+                    <form action="" method="post" class="mt-3">
+                        {%csrf_token%}
+                        <input type="text" name="answer" placeholder="enter your answer" class="form-control">
+                        <button type="submit" class="form-control mt-4 btn btn-outline-success">add</button>
+
+                    </form>
+                </div>
+            </div col-nd-4>
+            {%for q in questions%}
+            <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+                {%if q.user.profile.profile_pic%}
+                <img src="{{q.user.profile.profile_pic.url}}" alt="Avatar" class="w3-left w3-circle w3-margin-right"
+                    style="width:70px" height="80px">
+                {%else%}
+                <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right"
+                    style="width:60px">
+                {%endif%}
+                    {{q.created_date}}</span>
+                <h4>{{q.user}}</h4><br>
+                <hr class="w3-clear">
+                <p>{{q.description}}</p>
+                </div>
+                <div class="section">
+                    <div class="card mb-3" style="max-width: 500pxx;">
+                        <div class="row g-0">
+                            <div class="col-md-2">
+                                {%if request.user.profile.profile_pic%}
+                                <img src="{{request.user.profile.profile_pic.url}}" alt="Avatar"
+                                    class="w3-left w3-circle w3-margin-right" style="width: 70px" height="80px">
+                                {%else%}
+                                <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right"
+                                    style="width:60px">
+                                {%endif%}
+                            </div>
+                            <div class="col-md-10">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                    <form action="{%url 'add-answer' q.id%}" method="post">
+                                        {%csrf_token%}
+                                        <input type="text" name="answer" class="form-control rounded-pill"
+                                            placeholder="add your ansewer">
+                                        <button type="submit"
+                                            class="w3-button w3-theme-d2 w3-margin-bottom mt-2 btn btn-outline-btn-success"><i></i>Add</button>
+
+                                    </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+
+            <div class="col-4 mr-6">
+
+            </div>
+
+        </div>
+    </div>
+</section>
+{%endblock%}
